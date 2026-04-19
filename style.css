@@ -1,99 +1,105 @@
 :root {
     --hot-pink: #e91e63;
-    --soft-pink: #fce4ec;
-    --white: #ffffff;
+    --light-pink: #ffb6c1;
+    --gold: #ffd700;
 }
 
 body {
     margin: 0;
-    padding: 0;
-    background-color: #fffafa; /* Off-white background like the photo */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    color: white;
 }
 
-.decoration-container {
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
+.lighting-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(255, 182, 193, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+    animation: flicker 2s infinite;
+    z-index: 1;
 }
 
-/* Banner Flags */
-.banner-container {
-    margin-top: 50px;
+@keyframes flicker {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
 }
 
-.banner-row {
-    margin-bottom: 10px;
-}
-
+.banner-container { margin-top: 30px; text-align: center; }
 .flag {
     background-color: var(--hot-pink);
     color: white;
-    padding: 15px 10px;
-    margin: 2px;
+    padding: 12px 8px;
+    margin: 3px;
     font-weight: bold;
-    font-size: 1.5rem;
     display: inline-block;
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 85%, 0% 100%);
-    animation: sway 3s ease-in-out infinite;
 }
 
-/* Balloons */
-.balloon {
-    width: 80px;
-    height: 100px;
+.photo-frame {
+    width: 220px;
+    height: 220px;
+    margin: 40px auto;
+    border: 6px solid var(--light-pink);
     border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 40px var(--hot-pink);
+    position: relative;
+    z-index: 5;
+}
+
+.photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Heart Shapes */
+.heart {
     position: absolute;
-    bottom: -150px;
-    animation: float up 8s linear infinite;
-    z-index: -1;
+    width: 20px;
+    height: 20px;
+    background-color: var(--light-pink);
+    transform: rotate(45deg);
+    opacity: 0.8;
+    z-index: 2;
 }
 
-.pink { background-color: var(--hot-pink); left: 10%; }
-.white { background-color: #ddd; left: 30%; border: 1px solid #ccc; }
-.pink-light { background-color: #ff80ab; left: 60%; }
-
-@keyframes up {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+.heart::before, .heart::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: var(--light-pink);
+    border-radius: 50%;
 }
 
-@keyframes sway {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
+.heart::before { left: -10px; }
+.heart::after { top: -10px; }
+
+.flower-pond {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(transparent, var(--hot-pink));
+    opacity: 0.3;
 }
 
-/* Button UI */
-button {
-    background-color: var(--hot-pink);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    border-radius: 50px;
+#start-overlay {
+    position: fixed;
+    top:0; left:0; width: 100%; height: 100%;
+    background: var(--hot-pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
-    transition: transform 0.2s;
+    text-align: center;
 }
 
-button:hover {
-    transform: scale(1.1);
-}
-
-.honeycomb {
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, var(--hot-pink) 20%, transparent 20%);
-    background-size: 10px 10px;
-    border-radius: 50%;
+.cracker {
     position: absolute;
-    bottom: 20px;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    z-index: 3;
 }
-.honeycomb.left { left: 20px; }
-.honeycomb.right { right: 20px; }
