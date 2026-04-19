@@ -1,83 +1,94 @@
 const overlay = document.getElementById('start-overlay');
 const audio = document.getElementById('birthday-song');
+const symbols = ["Δ", "□", "Σ", "π", "∞", "√", "∫", "▽", "+", "×"];
 
 overlay.addEventListener('click', () => {
     overlay.style.display = 'none';
+    audio.play();
     
-    // Play the 1.mp3.m4a file
-    audio.play().catch(error => {
-        console.log("Audio play failed. Check if 1.mp3.m4a exists in the folder.");
-    });
+    // Start Page Flipping Logic
+    startBookAnimation();
     
-    // Start Effects
-    setInterval(createHeart, 400);
-    setInterval(createCracker, 150);
+    // Environmental Effects
+    setInterval(createHeart, 500);
+    setInterval(createCracker, 200);
+    setInterval(createMathSymbol, 400);
     startFlowerRain();
 });
+
+function startBookAnimation() {
+    const pages = [
+        document.getElementById('p1'),
+        document.getElementById('p2'),
+        document.getElementById('p3')
+    ];
+    let currentPage = 0;
+
+    setInterval(() => {
+        if (currentPage < pages.length) {
+            pages[currentPage].classList.add('flipped');
+            currentPage++;
+        } else {
+            // Reset book after all pages flip
+            setTimeout(() => {
+                pages.forEach(p => p.classList.remove('flipped'));
+                currentPage = 0;
+            }, 2000);
+        }
+    }, 3000); // Flips every 3 seconds
+}
+
+function createMathSymbol() {
+    const el = document.createElement('div');
+    el.className = 'math-item';
+    el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.top = Math.random() * 100 + "vh";
+    el.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(el);
+    el.animate([
+        { transform: 'translate(0,0) rotate(0deg)', opacity: 0 },
+        { opacity: 0.5, offset: 0.5 },
+        { transform: `translate(${Math.random()*150}px, ${Math.random()*150}px) rotate(360deg)`, opacity: 0 }
+    ], { duration: 5000 });
+    setTimeout(() => el.remove(), 5000);
+}
 
 function createHeart() {
     const heart = document.createElement('div');
     heart.className = 'heart';
+    const size = Math.random() * 10 + 10;
+    heart.style.width = size + "px";
+    heart.style.height = size + "px";
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.bottom = "-50px";
-    
-    const size = Math.random() * 0.8 + 0.5;
-    heart.style.transform = `rotate(45deg) scale(${size})`;
-    
+    heart.style.bottom = "-20px";
     document.body.appendChild(heart);
-
-    const duration = Math.random() * 3 + 4;
-    heart.animate([
-        { bottom: '-50px', opacity: 1 },
-        { bottom: '110vh', opacity: 0 }
-    ], {
-        duration: duration * 1000,
-        easing: 'linear'
-    });
-
-    setTimeout(() => heart.remove(), duration * 1000);
+    heart.animate([{ bottom: '-20px', opacity: 1 }, { bottom: '110vh', opacity: 0 }], 
+        { duration: Math.random() * 3000 + 4000 });
+    setTimeout(() => heart.remove(), 7000);
 }
 
 function createCracker() {
-    const cracker = document.createElement('div');
-    cracker.className = 'cracker';
-    cracker.style.left = Math.random() * 100 + "vw";
-    cracker.style.bottom = "0px";
-    document.body.appendChild(cracker);
-
-    const destX = (Math.random() - 0.5) * 200;
-    const destY = - (Math.random() * 200 + 100);
-
-    cracker.animate([
-        { transform: 'translate(0, 0)', opacity: 1 },
-        { transform: `translate(${destX}px, ${destY}px)`, opacity: 0 }
-    ], {
-        duration: 1000,
-        easing: 'ease-out'
-    });
-
-    setTimeout(() => cracker.remove(), 1000);
+    const c = document.createElement('div');
+    c.className = 'cracker';
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.bottom = "0";
+    document.body.appendChild(c);
+    c.animate([{ transform: 'translate(0,0)', opacity: 1 }, 
+               { transform: `translate(${(Math.random()-0.5)*100}px, -200px)`, opacity: 0 }], 
+              { duration: 1000 });
+    setTimeout(() => c.remove(), 1000);
 }
 
 function startFlowerRain() {
     setInterval(() => {
-        const flower = document.createElement('div');
-        flower.innerHTML = "🌸";
-        flower.style.position = "fixed";
-        flower.style.top = "-50px";
-        flower.style.left = Math.random() * 100 + "vw";
-        flower.style.fontSize = "20px";
-        flower.style.zIndex = "4";
-        document.body.appendChild(flower);
-
-        flower.animate([
-            { transform: 'translateY(0) rotate(0deg)' },
-            { transform: 'translateY(110vh) rotate(360deg)' }
-        ], {
-            duration: 5000,
-            easing: 'linear'
-        });
-
-        setTimeout(() => flower.remove(), 5000);
-    }, 500);
+        const f = document.createElement('div');
+        f.innerHTML = "🌸";
+        f.style.position = "fixed";
+        f.style.left = Math.random() * 100 + "vw";
+        f.style.top = "-20px";
+        document.body.appendChild(f);
+        f.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(105vh)' }], { duration: 6000 });
+        setTimeout(() => f.remove(), 6000);
+    }, 1000);
 }
